@@ -15,11 +15,11 @@ class Player(Sprite):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.Surface((50,50))
-        self.image.fill(BLACK)
+        self.image = pg.transform.scale(game.player_img, (150,150))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(20, HEIGHT/2)
+        self.pos = vec(150, 660)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
@@ -48,12 +48,12 @@ class Player(Sprite):
             self.vel.y = -PLAYER_JUMP
     
     def inbounds(self):
-        if self.rect.x > WIDTH - 50:
-            self.pos.x = WIDTH - 25
+        if self.rect.x > WIDTH -75:
+            self.pos.x = WIDTH - 75
             self.vel.x = 0
             print("i am off the right side of the screen...")
-        if self.rect.x < 0:
-            self.pos.x = 25
+        if self.rect.x < -25:
+            self.pos.x = 50
             self.vel.x = 0
             print("i am off the left side of the screen...")
         if self.rect.y > HEIGHT:

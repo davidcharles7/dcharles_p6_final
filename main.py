@@ -6,13 +6,14 @@
 import pygame as pg
 import os
 # import settings 
+from os import path
 from settings import *
 from sprites import *
 # from pg.sprite import Sprite
 
 # set up assets folders
 game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, "img")
+img_folder = os.path.join(game_folder, "Images")
 
 
 # create game class in order to pass properties to the sprites file
@@ -27,13 +28,18 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         print(self.screen)
+    # sprite images
+    def load_data(self):
+        self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
+        
     def new(self):
         # starting a new game
+        self.load_data()
         self.score = 0
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
-        self.player = Player(self)
+        self.player = Player(self,)
         
         self.all_sprites.add(self.player)
         for plat in PLATFORM_LIST:
@@ -72,7 +78,7 @@ class Game:
                 #respawn only works if player is dead
                 if event.key == pg.K_e:
                     if self.player.living == False:
-                        self.player.pos = (30, 375)
+                        self.player.pos = (50, 660)
                         self.player.living = True
 
     def update(self):

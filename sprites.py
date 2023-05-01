@@ -48,12 +48,12 @@ class Player(Sprite):
             self.vel.y = -PLAYER_JUMP
     
     def inbounds(self):
-        if self.rect.x > WIDTH -75:
-            self.pos.x = WIDTH - 75
+        if self.rect.x > WIDTH - 80:
+            self.pos.x = WIDTH - 25
             self.vel.x = 0
             print("i am off the right side of the screen...")
-        if self.rect.x < -25:
-            self.pos.x = 50
+        if self.rect.x < -45:
+            self.pos.x = 30
             self.vel.x = 0
             print("i am off the left side of the screen...")
         if self.rect.y > HEIGHT:
@@ -74,16 +74,15 @@ class Player(Sprite):
         self.rect.midbottom = self.pos
 
 class Mob(Sprite):
-    def __init__(self,width,height, color):
+    def __init__(self, game):
         Sprite.__init__(self)
-        self.width = width
-        self.height = height
-        self.image = pg.Surface((self.width,self.height))
-        self.color = color
-        self.image.fill(self.color)
+        self.game = game
+        # self.identity = identity
+        self.image = pg.transform.scale(game.mob_img, (150,150))
         self.rect = self.image.get_rect()
+        self.image.set_colorkey(BLACK)
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(WIDTH/2, HEIGHT/2)
+        self.pos = (1000, 585)
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01
@@ -106,7 +105,7 @@ class Mob(Sprite):
         self.inbounds()
         # self.pos.x += self.vel.x
         # self.pos.y += self.vel.y
-        self.pos += self.vel
+        # self.pos += self.vel
         self.rect.center = self.pos
 
 # create a new platform class...

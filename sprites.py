@@ -16,10 +16,7 @@ class Door(Sprite):
         self.rect = self.image.get_rect()
         self.image.set_colorkey(BLACK)
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = (200, 585)
-        self.vel = vec(randint(1,5),randint(1,5))
-        self.acc = vec(1,1)
-        self.cofric = 0.01
+        self.pos = (200, 568)
     def update(self):
         self.rect.center = self.pos
 

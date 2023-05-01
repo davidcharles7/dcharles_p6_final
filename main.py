@@ -48,9 +48,8 @@ class Game:
         self.mob = Mob(self)
         self.boss = Boss(self)
         
-        self.all_sprites.add(self.player)
-        self.all_sprites.add(self.boss)
         self.all_sprites.add(self.door)
+        self.all_sprites.add(self.boss)
 
         self.enemies.add(self.boss)
 
@@ -63,6 +62,9 @@ class Game:
             m = Mob(self)
             self.all_sprites.add(m)
             self.enemies.add(m)
+
+        self.all_sprites.add(self.player)
+
         self.run()
     def run(self):
         self.playing = True

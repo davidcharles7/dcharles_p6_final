@@ -30,30 +30,39 @@ class Game:
         print(self.screen)
     # sprite images
     def load_data(self):
+        self.door_img = pg.image.load(path.join(img_folder, "Door_Sprite.png")).convert()
         self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
-        self.mob_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
-        
+        self.sking_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
+        self.skel_img = pg.image.load(path.join(img_folder, "Skeleton_Sprite.png")).convert()
+
     def new(self):
         # starting a new game
         self.load_data()
         self.score = 0
+
+        self.door = Door(self)
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
-        self.player = Player(self,)
-        self.skeleton_king = Mob(self)
+        self.player = Player(self)
+        self.mob = Mob(self)
+        self.boss = Boss(self)
         
         self.all_sprites.add(self.player)
-        self.all_sprites.add(self.skeleton_king)
+        self.all_sprites.add(self.boss)
+        self.all_sprites.add(self.door)
+
+        self.enemies.add(self.boss)
 
         for plat in PLATFORM_LIST:
             p = Platform(*plat)
             self.all_sprites.add(p)
             self.platforms.add(p)
-        # for i in range(0,10):
-        #     m = Mob(150,150)
-        #     self.all_sprites.add(m)
-        #     self.enemies.add(m)
+            
+        for i in range(0,1):
+            m = Mob(self)
+            self.all_sprites.add(m)
+            self.enemies.add(m)
         self.run()
     def run(self):
         self.playing = True

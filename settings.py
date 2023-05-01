@@ -20,12 +20,5 @@ SCORE = 0
 PAUSED = False
 
 # Starting platforms
-PLATFORM_LIST = [(0, HEIGHT - 60, WIDTH, 60 , GREEN, "normal"),
-                #  (0, HEIGHT+200, WIDTH, 1, ORANGE, "normal"),
-                #  (0, HEIGHT * 3 / 4, 100, 20, GRAY, "normal"),
-                #  (150, 330 , 100, 20, GREEN, "bouncey"),
-                #  (700, HEIGHT * 3 / 4, 100, 20, GRAY, "normal"),
-                #  (500, HEIGHT * 3 / 4, 100, 20, GRAY, "normal"),
-                #  (350, 200, 100, 20, GRAY, "normal"),
-                #  (0, 100, 120, 20, GRAY, "normal"),
+PLATFORM_LIST = [(0, HEIGHT - 60, WIDTH, 60 , GREEN, "normal")
                 ]

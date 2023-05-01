@@ -8,7 +8,20 @@ from random import randint
 
 vec = pg.math.Vector2
 
-# player class
+class Door(Sprite):
+    def __init__(self, game):
+        Sprite.__init__(self)
+        self.game = game
+        self.image = pg.transform.scale(game.door_img, (200,200))
+        self.rect = self.image.get_rect()
+        self.image.set_colorkey(BLACK)
+        self.rect.center = (WIDTH/2, HEIGHT/2)
+        self.pos = (200, 585)
+        self.vel = vec(randint(1,5),randint(1,5))
+        self.acc = vec(1,1)
+        self.cofric = 0.01
+    def update(self):
+        self.rect.center = self.pos
 
 class Player(Sprite):
     def __init__(self, game):
@@ -77,8 +90,7 @@ class Mob(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         self.game = game
-        # self.identity = identity
-        self.image = pg.transform.scale(game.mob_img, (150,150))
+        self.image = pg.transform.scale(game.skel_img, (150,150))
         self.rect = self.image.get_rect()
         self.image.set_colorkey(BLACK)
         self.rect.center = (WIDTH/2, HEIGHT/2)
@@ -108,7 +120,38 @@ class Mob(Sprite):
         # self.pos += self.vel
         self.rect.center = self.pos
 
-# create a new platform class...
+class Boss(Sprite):
+    def __init__(self, game):
+        Sprite.__init__(self)
+        self.game = game
+        self.image = pg.transform.scale(game.sking_img, (300,300))
+        self.rect = self.image.get_rect()
+        self.image.set_colorkey(BLACK)
+        self.rect.center = (WIDTH/2, HEIGHT/2)
+        self.pos = (700, 510)
+        self.vel = vec(randint(1,5),randint(1,5))
+        self.acc = vec(1,1)
+        self.cofric = 0.01
+    def inbounds(self):
+        if self.rect.x > WIDTH:
+            self.vel.x *= -1
+            # self.acc = self.vel * -self.cofric
+        if self.rect.x < 0:
+            self.vel.x *= -1
+            # self.acc = self.vel * -self.cofric
+        if self.rect.y < 0:
+            self.pos.y = 25
+            self.vel.y *= -1
+            # self.acc = self.vel * -self.cofric
+        if self.rect.y > HEIGHT:
+            self.vel.y *= -1
+            # self.acc = self.vel * -self.cofric
+    def update(self):
+        self.inbounds()
+        # self.pos.x += self.vel.x
+        # self.pos.y += self.vel.y
+        # self.pos += self.vel
+        self.rect.center = self.pos
 
 class Platform(Sprite):
     def __init__(self, x, y, width, height, color, variant):

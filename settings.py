@@ -1,6 +1,6 @@
 # file created by david charles
-WIDTH = 1440
-HEIGHT = 720
+WIDTH = 1200
+HEIGHT = 540
 PLAYER_ACC = 0.8
 PLAYER_FRICTION = -0.2
 PLAYER_JUMP = 15
@@ -13,12 +13,18 @@ BLUE = (173,216,230)
 RED = (255, 50, 50)
 GREEN = (140,200,120)
 ORANGE = (255,165,0)
-GRAY = (100,100,100)
+GRAY = (90,90,90)
 FPS = 60 
 RUNNING = True
 SCORE = 0
 PAUSED = False
+ALLOWD1 = False
+ALLOWD2 = False
+ALLOWD3 = False
+ENTEREDR1 = False
+ENTEREDR2 = False
+ENTEREDR3 = False
 
 # Starting platforms
-PLATFORM_LIST = [(0, HEIGHT - 60, WIDTH, 60 , GREEN, "normal")
+PLATFORM_LIST = [(0, HEIGHT - 80, WIDTH, 80 , GRAY, "normal")
                 ]

@@ -2,6 +2,11 @@
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 # Sources: 
 
+# Goals
+# Door Class will lead into new areas
+# boss fight
+# character items 
+
 # import libs
 import pygame as pg
 import os
@@ -30,17 +35,24 @@ class Game:
         print(self.screen)
     # sprite images
     def load_data(self):
-        self.door_img = pg.image.load(path.join(img_folder, "Door_Sprite.png")).convert()
+        self.door_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
         self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
         self.sking_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
         self.skel_img = pg.image.load(path.join(img_folder, "Skeleton_Sprite.png")).convert()
+        self.background_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
+
+    global ALLOWD1
+    global ALLOWD2
+    global ALLOWD3
+    global ENTEREDR1
+    global ENTEREDR2
+    global ENTEREDR3
 
     def new(self):
         # starting a new game
         self.load_data()
         self.score = 0
 
-        self.door = Door(self)
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
@@ -48,7 +60,6 @@ class Game:
         self.mob = Mob(self)
         self.boss = Boss(self)
         
-        self.all_sprites.add(self.door)
         self.all_sprites.add(self.boss)
 
         self.enemies.add(self.boss)
@@ -91,14 +102,19 @@ class Game:
                 if event.key == pg.K_SPACE:
                     self.player.jump()
                 #respawn only works if player is dead
-                if event.key == pg.K_e:
+                if event.key == pg.K_r:
                     if self.player.living == False:
                         self.player.pos = (50, 660)
                         self.player.living = True
+                # if event.key == pg.K_e:
+                #     if ALLOWD1 == True:
+                #         ENTEREDR1 = True
+                #         print("I went in d2")
 
     def update(self):
         self.all_sprites.update()
-        self.player.inbounds()
+        self.player.checkpos()
+        
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
@@ -121,14 +137,14 @@ class Game:
         
 
     def draw(self):
-        self.player.inbounds()
-        self.screen.fill(BLUE)
+        self.player.checkpos()
+        self.screen.blit(self.background_img, (0,0))
         self.all_sprites.draw(self.screen)
         if self.player.standing:
             # self.draw_text("I hit a plat!", 24, WHITE, WIDTH/2, HEIGHT/2)
             pass
         if self.player.living == False:
-            self.draw_text("PRESS E TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
+            self.draw_text("PRESS R TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
             
         # is this a method or a function?
         pg.display.flip()

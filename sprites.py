@@ -5,20 +5,7 @@ from pygame.sprite import Sprite
 from settings import *
 from random import randint
 
-
 vec = pg.math.Vector2
-
-class Door(Sprite):
-    def __init__(self, game):
-        Sprite.__init__(self)
-        self.game = game
-        self.image = pg.transform.scale(game.door_img, (200,200))
-        self.rect = self.image.get_rect()
-        self.image.set_colorkey(BLACK)
-        self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = (200, 568)
-    def update(self):
-        self.rect.center = self.pos
 
 class Player(Sprite):
     def __init__(self, game):
@@ -36,6 +23,33 @@ class Player(Sprite):
         self.canjump = False
         self.standing = False
         self.living = True
+    # ...
+    def jump(self):
+        self.rect.x += 1
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        self.rect.x -= 1
+        if hits:
+            self.vel.y = -PLAYER_JUMP
+    
+    def checkpos(self):
+        if self.rect.x > WIDTH - 80:
+            self.pos.x = WIDTH - 25
+            self.vel.x = 0
+            print("i am off the right side of the screen...")
+        if self.rect.x < -45:
+            self.pos.x = 30
+            self.vel.x = 0
+            print("i am off the left side of the screen...")
+        if self.rect.y > HEIGHT:
+            self.living = False
+        if self.rect.x < 175 and self.rect.x > 25:
+            ALLOWD1 = True
+            print("I can go in")
+            keystate = pg.key.get_pressed()
+            if keystate[pg.K_e]:
+                ENTEREDR1 = True
+                print("I went in r1")
+
     def input(self):
         keystate = pg.key.get_pressed()
         if keystate[pg.K_a]:
@@ -49,25 +63,7 @@ class Player(Sprite):
         #     else:
         #         PAUSED = False
         #         print(PAUSED)
-    # ...
-    def jump(self):
-        self.rect.x += 1
-        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        self.rect.x -= 1
-        if hits:
-            self.vel.y = -PLAYER_JUMP
-    
-    def inbounds(self):
-        if self.rect.x > WIDTH - 80:
-            self.pos.x = WIDTH - 25
-            self.vel.x = 0
-            print("i am off the right side of the screen...")
-        if self.rect.x < -45:
-            self.pos.x = 30
-            self.vel.x = 0
-            print("i am off the left side of the screen...")
-        if self.rect.y > HEIGHT:
-            self.living = False
+            
         
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
@@ -82,6 +78,7 @@ class Player(Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.midbottom = self.pos
+        
 
 class Mob(Sprite):
     def __init__(self, game):
@@ -96,7 +93,7 @@ class Mob(Sprite):
         self.acc = vec(1,1)
         self.cofric = 0.01
     # ...
-    def inbounds(self):
+    def checkpos(self):
         if self.rect.x > WIDTH:
             self.vel.x *= -1
             # self.acc = self.vel * -self.cofric
@@ -111,7 +108,7 @@ class Mob(Sprite):
             self.vel.y *= -1
             # self.acc = self.vel * -self.cofric
     def update(self):
-        self.inbounds()
+        self.checkpos()
         # self.pos.x += self.vel.x
         # self.pos.y += self.vel.y
         # self.pos += self.vel
@@ -129,7 +126,7 @@ class Boss(Sprite):
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01
-    def inbounds(self):
+    def checkpos(self):
         if self.rect.x > WIDTH:
             self.vel.x *= -1
             # self.acc = self.vel * -self.cofric
@@ -144,7 +141,7 @@ class Boss(Sprite):
             self.vel.y *= -1
             # self.acc = self.vel * -self.cofric
     def update(self):
-        self.inbounds()
+        self.checkpos()
         # self.pos.x += self.vel.x
         # self.pos.y += self.vel.y
         # self.pos += self.vel

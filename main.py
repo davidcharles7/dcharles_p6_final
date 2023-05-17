@@ -35,23 +35,16 @@ class Game:
         print(self.screen)
     # sprite images
     def load_data(self):
-        self.door_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
         self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
         self.sking_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
         self.skel_img = pg.image.load(path.join(img_folder, "Skeleton_Sprite.png")).convert()
-        self.background_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
+        self.background1_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
+        self.background2_img = pg.image.load(path.join(img_folder, "Background2.jpg")).convert()
 
-    global ALLOWD1
-    global ALLOWD2
-    global ALLOWD3
-    global ENTEREDR1
-    global ENTEREDR2
-    global ENTEREDR3
 
     def new(self):
         # starting a new game
         self.load_data()
-        self.score = 0
 
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
@@ -81,9 +74,12 @@ class Game:
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
+            self.player.checkpos()
+            self.room_enter()
             self.events()
             self.update()
             self.draw()
+            # print(self.player.pos.x)
     #blits text on screen
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('arial')
@@ -106,15 +102,33 @@ class Game:
                     if self.player.living == False:
                         self.player.pos = (50, 660)
                         self.player.living = True
-                # if event.key == pg.K_e:
-                #     if ALLOWD1 == True:
-                #         ENTEREDR1 = True
-                #         print("I went in d2")
+        
+    def room_enter(self):
+        keystate = pg.key.get_pressed()
+        if self.player.rect.x < 175 and self.player.rect.x > 25: 
+            ALLOWD1 = True
+            # print("I can go in")
+            if keystate[pg.K_e]:
+                global ENTEREDR1
+                ENTEREDR1 = True
+                # print("I went in r1")
+        if ENTEREDR1 == True:
+            if self.player.rect.x < 500 and self.player.rect.x > 175:
+                if keystate[pg.K_e]:
+                    ENTEREDR1 = False
+                    self.screen.blit(self.background1_img, (0,0))
+                    # print("I left in r1")
+            if self.player.rect.x < 850 and self.player.rect.x > 700:
+                if keystate[pg.K_e]:
+                    print("player wants to open chest")
+                    
+        
+        
 
     def update(self):
         self.all_sprites.update()
         self.player.checkpos()
-        
+            
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
@@ -138,13 +152,29 @@ class Game:
 
     def draw(self):
         self.player.checkpos()
-        self.screen.blit(self.background_img, (0,0))
+        if ENTEREDR1 == False and ENTEREDR2 == False and ENTEREDR3 == False:
+            self.screen.blit(self.background1_img, (0,0))
+        if ENTEREDR1 == True:
+            self.screen.blit(self.background2_img, (0,0))
+
         self.all_sprites.draw(self.screen)
         if self.player.standing:
             # self.draw_text("I hit a plat!", 24, WHITE, WIDTH/2, HEIGHT/2)
             pass
         if self.player.living == False:
             self.draw_text("PRESS R TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
+        
+        if self.player.rect.x < 175 and self.player.rect.x > 25 and ENTEREDR1 == False: 
+            self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
+
+        if ENTEREDR1 == True:
+            if self.player.rect.x < 350 and self.player.rect.x > 175:
+                self.draw_text("Press E to leave...", 72, WHITE, WIDTH/2, 460) 
+            if self.player.rect.x < 800 and self.player.rect.x > 650:
+                if HASKEY == False:
+                    self.draw_text("You need a key to open the chest...", 72, WHITE, WIDTH/2, 460) 
+                if HASKEY == True:
+                    self.draw_text("Press E open the chest...", 72, WHITE, WIDTH/2, 460) 
             
         # is this a method or a function?
         pg.display.flip()

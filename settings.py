@@ -13,10 +13,9 @@ BLUE = (173,216,230)
 RED = (255, 50, 50)
 GREEN = (140,200,120)
 ORANGE = (255,165,0)
-GRAY = (90,90,90)
+GRAY = (60,60,60)
 FPS = 60 
 RUNNING = True
-SCORE = 0
 PAUSED = False
 ALLOWD1 = False
 ALLOWD2 = False
@@ -24,6 +23,7 @@ ALLOWD3 = False
 ENTEREDR1 = False
 ENTEREDR2 = False
 ENTEREDR3 = False
+HASKEY = False
 
 # Starting platforms
 PLATFORM_LIST = [(0, HEIGHT - 80, WIDTH, 80 , GRAY, "normal")

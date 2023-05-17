@@ -35,20 +35,14 @@ class Player(Sprite):
         if self.rect.x > WIDTH - 80:
             self.pos.x = WIDTH - 25
             self.vel.x = 0
-            print("i am off the right side of the screen...")
+            # print("i am off the right side of the screen...")
         if self.rect.x < -45:
             self.pos.x = 30
             self.vel.x = 0
-            print("i am off the left side of the screen...")
+            # print("i am off the left side of the screen...")
         if self.rect.y > HEIGHT:
             self.living = False
-        if self.rect.x < 175 and self.rect.x > 25:
-            ALLOWD1 = True
-            print("I can go in")
-            keystate = pg.key.get_pressed()
-            if keystate[pg.K_e]:
-                ENTEREDR1 = True
-                print("I went in r1")
+        
 
     def input(self):
         keystate = pg.key.get_pressed()
@@ -69,9 +63,9 @@ class Player(Sprite):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
             if hits:
                 print("you collided with an enemy...")
-                self.game.score += 1
-                print(SCORE)
+                
     def update(self):
+        self.checkpos()
         self.acc = vec(0, PLAYER_GRAV)
         self.acc.x = self.vel.x * PLAYER_FRICTION
         self.input()
@@ -88,7 +82,7 @@ class Mob(Sprite):
         self.rect = self.image.get_rect()
         self.image.set_colorkey(BLACK)
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = (1000, 585)
+        self.pos = (1000, 1000)
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01
@@ -122,7 +116,7 @@ class Boss(Sprite):
         self.rect = self.image.get_rect()
         self.image.set_colorkey(BLACK)
         self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = (700, 510)
+        self.pos = (700, 1000)
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01

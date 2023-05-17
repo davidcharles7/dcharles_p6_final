@@ -106,7 +106,6 @@ class Game:
     def room_enter(self):
         keystate = pg.key.get_pressed()
         if self.player.rect.x < 175 and self.player.rect.x > 25: 
-            ALLOWD1 = True
             # print("I can go in")
             if keystate[pg.K_e]:
                 global ENTEREDR1

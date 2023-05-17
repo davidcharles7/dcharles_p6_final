@@ -1,6 +1,8 @@
 # This file was created by: david charles
-# Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 # Sources: 
+# http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
+# https://www.youtube.com/@Kidscancode/videos
+# https://www.youtube.com/watch?v=Ongc4EVqRjo&t=656s
 
 # Goals
 # Door Class will lead into new areas
@@ -81,7 +83,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-            print(self.player.pos.x)
+            # print(self.player.pos.x)
     #blits text on screen
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('arial')

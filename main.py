@@ -40,6 +40,8 @@ class Game:
         self.skel_img = pg.image.load(path.join(img_folder, "Skeleton_Sprite.png")).convert()
         self.background1_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
         self.background2_img = pg.image.load(path.join(img_folder, "Background2.jpg")).convert()
+        self.background3_img = pg.image.load(path.join(img_folder, "Background3.jpg")).convert()
+
 
 
     def new(self):
@@ -79,7 +81,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-            # print(self.player.pos.x)
+            print(self.player.pos.x)
     #blits text on screen
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('arial')
@@ -120,6 +122,22 @@ class Game:
             if self.player.rect.x < 850 and self.player.rect.x > 700:
                 if keystate[pg.K_e]:
                     print("player wants to open chest")
+        if self.player.rect.x < 625 and self.player.rect.x > 425: 
+            # print("I can go in")
+            if keystate[pg.K_e]:
+                global ENTEREDR2
+                ENTEREDR2 = True
+                # print("I went in r1")
+        if ENTEREDR2 == True:
+            pass
+            # if self.player.rect.x < 500 and self.player.rect.x > 175:
+            #     if keystate[pg.K_e]:
+            #         ENTEREDR1 = False
+            #         self.screen.blit(self.background1_img, (0,0))
+            #         # print("I left in r1")
+            # if self.player.rect.x < 850 and self.player.rect.x > 700:
+            #     if keystate[pg.K_e]:
+            #         print("player wants to open chest")
                     
         
         
@@ -155,6 +173,8 @@ class Game:
             self.screen.blit(self.background1_img, (0,0))
         if ENTEREDR1 == True:
             self.screen.blit(self.background2_img, (0,0))
+        if ENTEREDR2 == True:
+            self.screen.blit(self.background3_img, (0,0))
 
         self.all_sprites.draw(self.screen)
         if self.player.standing:
@@ -164,6 +184,8 @@ class Game:
             self.draw_text("PRESS R TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
         
         if self.player.rect.x < 175 and self.player.rect.x > 25 and ENTEREDR1 == False: 
+            self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
+        if self.player.rect.x < 625 and self.player.rect.x > 425 and ENTEREDR2 == False: 
             self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
 
         if ENTEREDR1 == True:

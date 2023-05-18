@@ -4,6 +4,11 @@
 # https://www.youtube.com/@Kidscancode/videos
 # https://www.youtube.com/watch?v=Ongc4EVqRjo&t=656s
 
+# Images
+# https://www.freepik.com/free-vector/dungeon-door-medieval-castle-with-wood-chest_38720947.htm#query=cartoon%20dungeon&position=29&from_view=keyword&track=ais
+# https://stock.adobe.com/images/arches-in-wall-from-stone-bricks-in-ancient-classic-architecture-vector-cartoon-illustration-of-vintage-facade-of-castle-palace-or-temple-with-granite-blocks-and-arcade/477404666
+# https://www.istockphoto.com/illustrations/throne-room 
+
 # Goals
 # Door Class will lead into new areas
 # boss fight
@@ -35,7 +40,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         print(self.screen)
-    # sprite images
+    # sprite and background images
     def load_data(self):
         self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
         self.sking_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
@@ -50,15 +55,17 @@ class Game:
         # starting a new game
         self.load_data()
 
+
+        # allows game to access sprites libraries
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
         self.mob = Mob(self)
         self.boss = Boss(self)
-        
-        self.all_sprites.add(self.boss)
 
+        # adds boss to group
+        self.all_sprites.add(self.boss)
         self.enemies.add(self.boss)
 
         for plat in PLATFORM_LIST:
@@ -78,6 +85,7 @@ class Game:
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
+            # checkpos makes sure player stays inbounds
             self.player.checkpos()
             self.room_enter()
             self.events()
@@ -107,14 +115,17 @@ class Game:
                         self.player.pos = (50, 660)
                         self.player.living = True
         
+    # room_enter checks player pos and changes entered bools if E key pressed
     def room_enter(self):
         keystate = pg.key.get_pressed()
+        # door 1
         if self.player.rect.x < 175 and self.player.rect.x > 25: 
             # print("I can go in")
             if keystate[pg.K_e]:
                 global ENTEREDR1
                 ENTEREDR1 = True
                 # print("I went in r1")
+        # inside room 1
         if ENTEREDR1 == True:
             if self.player.rect.x < 500 and self.player.rect.x > 175:
                 if keystate[pg.K_e]:
@@ -124,12 +135,14 @@ class Game:
             if self.player.rect.x < 850 and self.player.rect.x > 700:
                 if keystate[pg.K_e]:
                     print("player wants to open chest")
+        # door 2
         if self.player.rect.x < 625 and self.player.rect.x > 425: 
             # print("I can go in")
             if keystate[pg.K_e]:
                 global ENTEREDR2
                 ENTEREDR2 = True
                 # print("I went in r1")
+        # inside room 2
         if ENTEREDR2 == True:
             pass
             # if self.player.rect.x < 500 and self.player.rect.x > 175:
@@ -153,43 +166,46 @@ class Game:
             if hits:
                 self.player.standing = True
                 self.player.living = True
-                if hits[0].variant == "disappearing":
-                    hits[0].kill()
-                elif hits[0].variant == "bouncey":
-                    self.player.pos.y = hits[0].rect.top
-                    self.player.vel.y = -1.2*PLAYER_JUMP
-                #player will fall into the void
-                elif hits[0].variant == "danger":
-                    self.player.standing = False
-                    self.player.living = False
-                else:
-                    self.player.pos.y = hits[0].rect.top
-                    self.player.vel.y = 0
+                # if hits[0].variant == "disappearing":
+                #     hits[0].kill()
+                # elif hits[0].variant == "bouncey":
+                #     self.player.pos.y = hits[0].rect.top
+                #     self.player.vel.y = -1.2*PLAYER_JUMP
+                # #player will fall into the void
+                # elif hits[0].variant == "danger":
+                #     self.player.standing = False
+                #     self.player.living = False
+                # else:
+                #     self.player.pos.y = hits[0].rect.top
+                #     self.player.vel.y = 0
             else:
                 self.player.standing = False
         
 
     def draw(self):
         self.player.checkpos()
+        # if the player isn't in a room
         if ENTEREDR1 == False and ENTEREDR2 == False and ENTEREDR3 == False:
             self.screen.blit(self.background1_img, (0,0))
+        # if in room 1
         if ENTEREDR1 == True:
             self.screen.blit(self.background2_img, (0,0))
+        # in room 2
         if ENTEREDR2 == True:
             self.screen.blit(self.background3_img, (0,0))
 
         self.all_sprites.draw(self.screen)
         if self.player.standing:
-            # self.draw_text("I hit a plat!", 24, WHITE, WIDTH/2, HEIGHT/2)
             pass
         if self.player.living == False:
             self.draw_text("PRESS R TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
-        
-        if self.player.rect.x < 175 and self.player.rect.x > 25 and ENTEREDR1 == False: 
-            self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
-        if self.player.rect.x < 625 and self.player.rect.x > 425 and ENTEREDR2 == False: 
-            self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
-
+        # if the player is in the main room 
+        if ENTEREDR1 == False and ENTEREDR2 == False and ENTEREDR3 == False:
+            if self.player.rect.x < 175 and self.player.rect.x > 25 and ENTEREDR1 == False: 
+                self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
+            if self.player.rect.x < 625 and self.player.rect.x > 425 and ENTEREDR2 == False: 
+                self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
+        # if the player entered room 1
         if ENTEREDR1 == True:
             if self.player.rect.x < 350 and self.player.rect.x > 175:
                 self.draw_text("Press E to leave...", 72, WHITE, WIDTH/2, 460) 
@@ -199,7 +215,6 @@ class Game:
                 if HASKEY == True:
                     self.draw_text("Press E open the chest...", 72, WHITE, WIDTH/2, 460) 
             
-        # is this a method or a function?
         pg.display.flip()
     def get_mouse_now(self):
         x,y = pg.mouse.get_pos()

@@ -166,18 +166,12 @@ class Game:
             if hits:
                 self.player.standing = True
                 self.player.living = True
-                # if hits[0].variant == "disappearing":
-                #     hits[0].kill()
-                # elif hits[0].variant == "bouncey":
-                #     self.player.pos.y = hits[0].rect.top
-                #     self.player.vel.y = -1.2*PLAYER_JUMP
-                # #player will fall into the void
-                # elif hits[0].variant == "danger":
-                #     self.player.standing = False
-                #     self.player.living = False
-                # else:
-                #     self.player.pos.y = hits[0].rect.top
-                #     self.player.vel.y = 0
+                if hits[0].variant == "danger":
+                    self.player.standing = False
+                    self.player.living = False
+                else:
+                    self.player.pos.y = hits[0].rect.top
+                    self.player.vel.y = 0
             else:
                 self.player.standing = False
         

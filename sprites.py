@@ -12,7 +12,7 @@ class Player(Sprite):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.transform.scale(game.player_img, (150,150))
+        self.image = pg.transform.scale(game.player_img, (200,200))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
@@ -32,12 +32,12 @@ class Player(Sprite):
             self.vel.y = -PLAYER_JUMP
     
     def checkpos(self):
-        if self.rect.x > WIDTH - 80:
-            self.pos.x = WIDTH - 25
+        if self.rect.x > WIDTH - 150:
+            self.pos.x = WIDTH - 50
             self.vel.x = 0
             # print("i am off the right side of the screen...")
-        if self.rect.x < -45:
-            self.pos.x = 30
+        if self.rect.x < -50:
+            self.pos.x = 50
             self.vel.x = 0
             # print("i am off the left side of the screen...")
         if self.rect.y > HEIGHT:

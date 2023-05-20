@@ -20,7 +20,11 @@ PAUSED = False
 ENTEREDR1 = False
 ENTEREDR2 = False
 ENTEREDR3 = False
+ENTEREDR4 = False
+TALKWIZARD = False
 HASKEY = False
+HASSHIELD = False
+HASSWORD = False
 
 # Starting platforms
 PLATFORM_LIST = [(0, HEIGHT - 80, WIDTH, 80 , GRAY, "normal")

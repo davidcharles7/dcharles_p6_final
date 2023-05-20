@@ -10,7 +10,8 @@
 # https://www.istockphoto.com/illustrations/throne-room 
 
 # Goals
-# Door Class will lead into new areas
+# Door Class will lead into new areas (Done)
+# Multiple Rooms with different tasks 
 # boss fight
 # character items 
 
@@ -21,6 +22,7 @@ import os
 from os import path
 from settings import *
 from sprites import *
+import time
 # from pg.sprite import Sprite
 
 # set up assets folders
@@ -42,12 +44,16 @@ class Game:
         print(self.screen)
     # sprite and background images
     def load_data(self):
-        self.player_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
+        self.player_img = pg.image.load(path.join(img_folder, "Prince_Sprite.png")).convert()
+        self.wiz_img = pg.image.load(path.join(img_folder, "Wizard_Sprite.png")).convert()
+        self.wiz_img.set_colorkey(BLACK)
         self.sking_img = pg.image.load(path.join(img_folder, "Skeleton_King_Sprite.png")).convert()
         self.skel_img = pg.image.load(path.join(img_folder, "Skeleton_Sprite.png")).convert()
         self.background1_img = pg.image.load(path.join(img_folder, "Background1.jpg")).convert()
         self.background2_img = pg.image.load(path.join(img_folder, "Background2.jpg")).convert()
         self.background3_img = pg.image.load(path.join(img_folder, "Background3.jpg")).convert()
+        self.background4_img = pg.image.load(path.join(img_folder, "Background4.jpg")).convert()
+
 
 
 
@@ -119,7 +125,7 @@ class Game:
     def room_enter(self):
         keystate = pg.key.get_pressed()
         # door 1
-        if self.player.rect.x < 175 and self.player.rect.x > 25: 
+        if self.player.rect.x < 175 and self.player.rect.x > 10: 
             # print("I can go in")
             if keystate[pg.K_e]:
                 global ENTEREDR1
@@ -127,14 +133,30 @@ class Game:
                 # print("I went in r1")
         # inside room 1
         if ENTEREDR1 == True:
-            if self.player.rect.x < 500 and self.player.rect.x > 175:
+            if self.player.rect.x < 350 and self.player.rect.x > 125:
                 if keystate[pg.K_e]:
                     ENTEREDR1 = False
                     self.screen.blit(self.background1_img, (0,0))
                     # print("I left in r1")
-            if self.player.rect.x < 850 and self.player.rect.x > 700:
+            if self.player.rect.x < 800 and self.player.rect.x > 550:
                 if keystate[pg.K_e]:
                     print("player wants to open chest")
+            if self.player.rect.x < 1200 and self.player.rect.x > 900:
+                if keystate[pg.K_e]:
+                    global ENTEREDR4
+                    ENTEREDR4 = True
+                    self.screen.blit(self.background4_img, (0,0))
+            if self.player.rect.x < 1200 and self.player.rect.x > 900 and ENTEREDR4 == True:
+                if keystate[pg.K_f]:
+                    ENTEREDR4 = False
+                    self.screen.blit(self.background2_img, (0,0))
+            if self.player.rect.x < 250 and self.player.rect.x > -150 and ENTEREDR4 == True:
+                if keystate[pg.K_e]:
+                    global TALKWIZARD
+                    TALKWIZARD = True
+
+
+
         # door 2
         if self.player.rect.x < 625 and self.player.rect.x > 425: 
             # print("I can go in")
@@ -153,6 +175,7 @@ class Game:
             # if self.player.rect.x < 850 and self.player.rect.x > 700:
             #     if keystate[pg.K_e]:
             #         print("player wants to open chest")
+        
                     
         
         
@@ -187,27 +210,47 @@ class Game:
         # in room 2
         if ENTEREDR2 == True:
             self.screen.blit(self.background3_img, (0,0))
+        if ENTEREDR4 == True:
+            self.screen.blit(self.background4_img, (0,0))
+            self.screen.blit(self.wiz_img, (80,260))
 
         self.all_sprites.draw(self.screen)
+        self.all_sprites.draw(self.wiz_img)
         if self.player.standing:
             pass
         if self.player.living == False:
             self.draw_text("PRESS R TO RESPAWN", 72, WHITE, WIDTH/2, 100) 
         # if the player is in the main room 
         if ENTEREDR1 == False and ENTEREDR2 == False and ENTEREDR3 == False:
-            if self.player.rect.x < 175 and self.player.rect.x > 25 and ENTEREDR1 == False: 
+            if self.player.rect.x < 175 and self.player.rect.x > 10 and ENTEREDR1 == False: 
                 self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
             if self.player.rect.x < 625 and self.player.rect.x > 425 and ENTEREDR2 == False: 
                 self.draw_text("Press E to Enter...", 72, WHITE, WIDTH/2, 460) 
         # if the player entered room 1
-        if ENTEREDR1 == True:
-            if self.player.rect.x < 350 and self.player.rect.x > 175:
+        if ENTEREDR1 == True and ENTEREDR4 == False:
+            if self.player.rect.x < 350 and self.player.rect.x > 125:
                 self.draw_text("Press E to leave...", 72, WHITE, WIDTH/2, 460) 
-            if self.player.rect.x < 800 and self.player.rect.x > 650:
+            if self.player.rect.x < 800 and self.player.rect.x > 550:
                 if HASKEY == False:
                     self.draw_text("You need a key to open the chest...", 72, WHITE, WIDTH/2, 460) 
                 if HASKEY == True:
                     self.draw_text("Press E open the chest...", 72, WHITE, WIDTH/2, 460) 
+            if self.player.rect.x < 1200 and self.player.rect.x > 900:
+                self.draw_text("Press E to go up the stairs...", 72, WHITE, WIDTH/2, 460) 
+        if ENTEREDR4 == True:
+            if self.player.rect.x < 1200 and self.player.rect.x > 900:
+                self.draw_text("Press F to leave...", 72, WHITE, WIDTH/2, 460) 
+            if self.player.rect.x < 250 and self.player.rect.x > -150 and TALKWIZARD == False:
+                self.draw_text("Press E to talk to the Wizard", 72, WHITE, WIDTH/2, 460) 
+            if TALKWIZARD == True:
+                self.draw_text("I'd like for you to have this magic sword", 72, WHITE, WIDTH/2, 460)
+
+
+
+
+
+
+            
             
         pg.display.flip()
     def get_mouse_now(self):
